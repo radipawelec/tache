@@ -1,0 +1,40 @@
+<form method="post" action="">
+  {% csrf_token %}
+
+ <div class="modal-header">
+    <h5 class="modal-title">Create new List</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    {% for field in form %}
+      <div class="form-group{% if field.errors %} invalid{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}
+          <p class="help-block">{{ error }}</p>
+        {% endfor %}
+      </div>
+
+    {% endfor %}
+      <select name="list_board" id="id_list_board " class="form-control id_current_board">
+        <option value="{{ current_path }}">Current board</option>
+        </select>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-default btn-sm" data-dismiss="modal">Close</button>
+    <button type="button" class="submit-btn btn-outline-primary btn-sm">Create</button>
+  </div>
+
+</form>
+
+
+    <script>
+      $("#id_list_board").css("display","none");
+      $(".id_current_board ").css("display","none");
+      $("#id_list_name").addClass("form-control");
+      $("#id_list_description").addClass("form-control");
+      $("#id_list_description").addClass("form-control");
+    </script>

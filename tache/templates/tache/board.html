@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+body {
+    background-image: url({{ bg.board_background }});
+    background-size: cover;}
+</style>
+<div class="container-fluid container-main">
+<div class="row">
+    <div class="col-sm">
+        {% for single_list in active_lists %}
+<div class="single-list">
+    <h2>{{ single_list.list_name }}</h2>
+    <p class="list-description">{{ single_list.list_description }}</p>
+    {% if single_list.listcard_set.all %}
+    {% for single_card in single_list.listcard_set.all %}
+    <div class="single-card">
+        <h3 class="card-title">{{ single_card.card_name }}</h3>
+        <p class="card-desc">{{ single_card.card_description }}</p>
+    </div>
+    {% endfor %}
+
+    {% else %}
+    <div class="alert alert-warning">Brak kart dla tej listy</div>
+    {% endif %}
+</div>
+{% empty %}
+<div class="alert alert-danger">Brak aktywnych list</div>
+{% endfor %}
+    <div class="single-list single-list-add create-list">
+        <h2><i class="fa fa-plus" aria-hidden="true"></i> Dodaj listę...</h2></div>
+    </div>
+</div>
+</div>
+    <script type="text/javascript">
+  $(function () {
+    // Log in button
+    $(".create-list").modalForm({formURL: "{% url 'new_list' bg.pk %}"});
+
+  });
+</script>
+{% endblock %}
+

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{#    <style>#}
+{#    * {#}
+{#        background: url("{{ background }}");#}
+{#    }#}
+{#</style>#}
+<div class="container-fluid container-main">
+<div class="row">
+    <div class="col-sm">
+    <h2>Boards</h2>
+        {% for single_board in all_boards %}
+            <a href="{% url 'board' single_board.pk %}" style="display: block">
+<div class="single-board" style="background-image: url({{ single_board.board_background }})">
+    <h2 class="list-title list-title_on_board">{{ single_board.board_name }}</h2>
+        </div>
+            </a>
+            {% endfor %}
+
+    </div>
+</div>
+</div>
+
+
+{% endblock %}
+
