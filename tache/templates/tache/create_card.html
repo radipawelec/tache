@@ -3,7 +3,7 @@
   {% csrf_token %}
 
  <div class="modal-header">
-    <h5 class="modal-title">Create new List</h5>
+    <h5 class="modal-title">Create new Card</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -19,9 +19,9 @@
       </div>
 
     {% endfor %}
-      <select name="list_board" id="id_list_board " class="form-control id_current_board">
-        <option value="{{ current_path }}">Current board</option>
-        </select>
+{#      <select name="list_board" id="id_list_board " class="form-control id_current_board">#}
+{#        <option value="{{ current_path }}">Current board</option>#}
+{#        </select>#}
   </div>
 
   <div class="modal-footer">
@@ -33,9 +33,10 @@
 
 
     <script>
-      $("#id_list_board").css("display","none");
-      $(".id_current_board ").css("display","none");
-      $("#id_list_name").addClass("form-control");
-      $("#id_list_description").addClass("form-control");
-      $("#id_list_description").addClass("form-control");
+      {#$("#id_list_board").css("display","none");#}
+      {#$(".id_current_board ").css("display","none");#}
+      $("#id_card_name").addClass("form-control");
+      $("#id_card_priority").addClass("form-control");
+      $("#id_card_description").addClass("form-control");
+      $("#id_card_list").addClass("form-control");
     </script>

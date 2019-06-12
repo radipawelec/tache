@@ -1,11 +1,18 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404, HttpResponseRedirect
 from random import randint
 from django.urls import reverse_lazy, reverse, resolve
+from django.contrib.auth import login, authenticate
 import requests
+# from django.views.generic import *
+# from .forms import *
+# from .models import *
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalLoginView, BSModalUpdateView
 from .forms import *
-from .models import *
-from bootstrap_modal_forms.generic import BSModalCreateView, BSModalLoginView
 from .context_processor import *
+# from django.views.generic.base import View
+from django.contrib.auth.decorators import login_required
+
+
 
 #
 def home(request):
@@ -60,13 +67,12 @@ class BookCreateView(BSModalCreateView):
 
 
 class ListCreate(BSModalCreateView):
-    def get_cur_url(self):
-        current_url = self.request.session.resolver_match.url_name
-        print(current_url)
-        return current_url
+    def get_success_url(self):
+        return reverse_lazy('board',
+                            kwargs={'board_id': self.kwargs.get('board_id', None)}, )
     template_name = 'tache/create_list.html'
     form_class = AddList
-    success_url = reverse_lazy('board', kwargs={'board_id':1})
+    # success_url = reverse_lazy('board', kwargs={'board_id':})
 
 def board(request, board_id):
     try:
@@ -90,3 +96,69 @@ class CustomLoginView(BSModalLoginView):
     template_name = 'tache/login.html'
     success_message = 'Success: You were successfully logged in.'
     extra_context = dict(success_url=reverse_lazy('home'))
+
+
+class CardCreate(BSModalCreateView):
+    def get_success_url(self):
+        return reverse_lazy('board',
+                            kwargs={'board_id': self.kwargs.get('board_id', None)}, )
+    template_name = 'tache/create_card.html'
+    form_class = AddCard
+
+
+
+
+#
+# class DeleteView(View):
+#     def post(self, request, *args, **kwargs):
+#         card = get_object_or_404(ListList, pk=request.POST['single_list.pk'])
+#         print(card)
+#         card.delete()
+#         return HttpResponseRedirect('/')
+#
+@login_required
+def delete(request, list_id, board):
+    r = request.POST.dict()
+    list = r.get('list_id')
+    q = get_object_or_404(ListList, pk=list)
+    id = r.get("board")
+    q.delete()
+
+    return redirect('board', id)
+
+@login_required
+def delete_board(request, board):
+    r = request.POST.dict()
+    id = r.get("board")
+    q = get_object_or_404(ListBoard, pk=id)
+    q.delete()
+
+    return redirect('home')
+
+
+class SetBackground(BSModalUpdateView):
+    model = ListBoard
+    template_name = 'tache/set_wallpaper.html'
+    form_class = SetBackground
+    success_message = 'Success: Book was updated.'
+
+    def get_success_url(self):
+        return reverse_lazy('board',
+                            kwargs={'board_id': self.kwargs.get('pk', None)}, )
+
+def login_request(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request=request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+            else:
+                return render(request, "tahce/login2.html", {"form": form})
+        else:
+            return render(request, "tache/login2.html", {"form": form})
+    form = AuthenticationForm()
+    return render(request, "tache/login2.html", {"form": form})

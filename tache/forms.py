@@ -33,3 +33,13 @@ class CustomAuthenticationForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ['username', 'password']
+
+class AddCard(BSModalForm):
+    class Meta:
+        model = ListCard
+        fields = ['card_list', 'card_name', 'card_description', 'card_priority']
+
+class SetBackground(BSModalForm):
+    class Meta:
+        model = ListBoard
+        fields = ['board_name', 'board_background']

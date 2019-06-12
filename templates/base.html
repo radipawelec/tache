@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Tâche- organize your task</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" type="text/css" href="{% static 'assets/bootstrap/css/bootstrap.css'%}">
@@ -13,9 +13,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
     <script src="{% static 'js/jquery-3.4.1.min.js'%}"></script>
-
+    <script src="{% static 'assets/bootstrap/js/popper.min.js' %}"></script>
     <script src="{% static 'assets/bootstrap/js/bootstrap.min.js'%}"></script>
-        <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
 
 </head>
 <body>
@@ -28,9 +28,10 @@
 
   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-{#      <li class="nav-item active">#}
-{#        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>#}
-{#      </li>#}
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'home' %}"><i class="fa fa-home" aria-hidden="true"></i>
+Tache <span class="sr-only">(current)</span></a>
+      </li>
 {#      <li class="nav-item">#}
 {#        <a class="nav-link" href="#">Link</a>#}
 {#      </li>#}
@@ -43,11 +44,12 @@
       <button class="btn btn-outline-success my-2 my-sm-0 btn-sm" type="submit">Search</button>
     </form><span>&nbsp&nbsp </span>
       {% if user.is_authenticated %}
+
       <span>Hello {{ logged_username }}&nbsp&nbsp </span>
                  <button type="button" class=" create-book btn btn-outline-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
 
       {% else %}
-      <button type="button" class=" signup-btn btn btn-outline-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fa fa-user-plus" aria-hidden="true"></i></button>
+      <button  type="button" class=" signup-btn btn btn-outline-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg" ><i class="fa fa-user-plus" aria-hidden="true"></i></button>
 <span>&nbsp</span>
       <button type="button" class=" login-btn btn btn-outline-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fa fa-user-o" aria-hidden="true"></i></button>
 {% endif %}
@@ -99,5 +101,6 @@ $(document).ready(function() {
 
   });
 </script>
+
 </body>
 </html>

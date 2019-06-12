@@ -10,7 +10,6 @@ def logged_user_name(request):
         pass
 
 
-
 def get_current_path(request):
     path = request.get_full_path()
     path = re.sub("[^0-9]", "", path)

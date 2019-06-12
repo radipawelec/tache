@@ -6,12 +6,18 @@ body {
     background-image: url({{ bg.board_background }});
     background-size: cover;}
 </style>
+
+
+
 <div class="container-fluid container-main">
 <div class="row">
     <div class="col-sm">
         {% for single_list in active_lists %}
 <div class="single-list">
     <h2>{{ single_list.list_name }}</h2>
+
+
+
     <p class="list-description">{{ single_list.list_description }}</p>
     {% if single_list.listcard_set.all %}
     {% for single_card in single_list.listcard_set.all %}
@@ -20,19 +26,84 @@ body {
         <p class="card-desc">{{ single_card.card_description }}</p>
     </div>
     {% endfor %}
+        <button type="button" class="btn btn-sm btn-outline-success create-card" style="width: 100%"><i class="fa fa-plus" aria-hidden="true"></i>
+ Add new card</button><br/><br/>
 
+{#    <div class="single-card alert alert-primary create-card">#}
+{#        <h3 class="card-title"></h3>#}
+{##}
+{#    </div>#}
+        <form action="{% url 'delete' bg.pk single_list.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="list_id" value="{{ single_list.pk }}">
+    <input type="hidden" name="board" value="{{ bg.pk }}">
+            <button class="btn btn-outline-danger btn-sm" type="submit" style="width: 100%"><i class="fa fa-trash-o" aria-hidden="true"></i>
+ Delete list</button>
+</form>
     {% else %}
     <div class="alert alert-warning">Brak kart dla tej listy</div>
+        <button type="button" class="btn btn-sm btn-outline-success create-card" style="width: 100%"><i class="fa fa-plus" aria-hidden="true"></i>
+ Add new card</button><br/><br />
+                <form action="{% url 'delete' bg.pk single_list.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="list_id" value="{{ single_list.pk }}">
+    <input type="hidden" name="board" value="{{ bg.pk }}">
+            <button class="btn btn-outline-danger btn-sm" type="submit" style="width: 100%"><i class="fa fa-trash-o" aria-hidden="true"></i>
+ Delete list</button>
+</form>
+{#            <div class="single-card alert alert-primary create-card">#}
+{#        <h3 class="card-title"><i class="fa fa-plus" aria-hidden="true"></i>#}
+{# Dodaj nową kartę...</h3>#}
+{##}
+{#    </div>#}
     {% endif %}
 </div>
 {% empty %}
 <div class="alert alert-danger">Brak aktywnych list</div>
 {% endfor %}
     <div class="single-list single-list-add create-list">
-        <h2><i class="fa fa-plus" aria-hidden="true"></i> Dodaj listę...</h2></div>
+        <h2><i class="fa fa-plus" aria-hidden="true"></i> Add new list...</h2></div>
     </div>
 </div>
+    <br/><br/><br/>
+    <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+<!-- Default dropup button -->
+<div class="btn-group dropup">
+  <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Board menu
+  </button>
+ <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+<form action="{% url 'delete_board' bg.pk %}" method="POST">
+    {% csrf_token %}
+{#    <input type="hidden" name="list_id" value="{{ single_list.pk }}">#}
+    <input type="hidden" name="board" value="{{ bg.pk }}">
+            <button class="dropdown-item btn btn-danger btn-sm" type="submit" onclick="return confirm('Are you sure you want to delete this board?')" ><i class="fa fa-trash-o" aria-hidden="true" ></i>
+ Delete <i>this</i> board</button>
+</form>
+                      <button type="button" class=" dropdown-item create-book btn btn-outline-primary btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg"><i class="fa fa-plus-circle" aria-hidden="true"> </i> Create new board</button>
+
+       <button type="button" class="update-book dropdown-item btn btn-sm btn-primary" data-id="{% url 'set_background' bg.pk %}">
+{#        <span class="fa fa-pencil"> </span>Edit <i>this</i> board background#}
+           <i class="fa fa-pencil" aria-hidden="true"> </i> Edit <i>this</i> board
+      </button>
+ </div>
 </div>
+  </ol>
+</nav>
+</div>
+
+
+
+<script>
+    $(".update-book").each(function () {
+      $(this).modalForm({formURL: $(this).data('id')});
+    });</script>
+
+    <script>
+$('.dropdown-toggle').dropdown()
+</script>
+
     <script type="text/javascript">
   $(function () {
     // Log in button
@@ -40,5 +111,18 @@ body {
 
   });
 </script>
-{% endblock %}
 
+    <script type="text/javascript">
+  $(function () {
+    // Log in button
+    $(".create-card").modalForm({formURL: "{% url 'new_card' bg.pk %}"});
+
+  });
+</script>
+
+                <script>
+                    $(document).on('click', '.confirm-delete', function(){
+    return confirm('Are you sure you want to delete this board?');
+})</script>
+
+{% endblock %}

@@ -6,6 +6,7 @@
 {#        background: url("{{ background }}");#}
 {#    }#}
 {#</style>#}
+
 <div class="container-fluid container-main">
 <div class="row">
     <div class="col-sm">
@@ -18,11 +19,16 @@
     <div class="single-card">
         <h3 class="card-title">{{ single_card.card_name }}</h3>
         <p class="card-desc">{{ single_card.card_description }}</p>
+
     </div>
+
     {% endfor %}
+
     {% else %}
     <div class="alert alert-warning">Brak kart dla tej listy</div>
+
     {% endif %}
+
 </div>
 {% empty %}
 <div class="alert alert-danger">Brak aktywnych list</div>
